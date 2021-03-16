@@ -49,6 +49,8 @@ class Driver {
 		ArrayList<Double> numeros = new ArrayList<Double>();
 		ArrayList<Symbol> operadores = new ArrayList<Symbol>();
 		double result = 0;
+		int contadorMenos = 0;
+		int contadorMenos1 = 0;
 
 		// Impresion por pantalla
 		System.out.println("RESULTADO: ");
@@ -57,21 +59,39 @@ class Driver {
 		} else {
 			for (int i = 0; i < simbolos.size(); i++) {
 				if (simbolos.get(i).type() == 9) {
-					numeros.add(Double.valueOf((String) simbolos.get(i).value()));
+					if (i != 0) {
+						if (simbolos.get(i - 1).type() == 4) {
+							numeros.add(Double.valueOf((String) simbolos.get(i).value()) * -1);
+						} else {
+							numeros.add(Double.valueOf((String) simbolos.get(i).value()));
+						}
+					} else {
+						numeros.add(Double.valueOf((String) simbolos.get(i).value()));
+					}
 				}
-				if (simbolos.get(i).type() == 3 || simbolos.get(i).type() == 4 || simbolos.get(i).type() == 5
-						|| simbolos.get(i).type() == 6) {
+				if (simbolos.get(i).type() == 3 || simbolos.get(i).type() == 5 || simbolos.get(i).type() == 6) {
 					operadores.add(simbolos.get(i));
+				}
+				/*if (i != 0 && i != simbolos.size() - 1 && simbolos.get(i - 1).type() == 9
+						&& simbolos.get(i + 1).type() == 9 && simbolos.get(i).type() == 4) {
+					operadores.add((Symbol)"+");
+					contadorMenos1++;
+				}*/
+				if (simbolos.get(i).type() == 4) {
+					contadorMenos++;
 				}
 				if (simbolos.get(i).type() == 2) {
 					for (int j = 0; j < numeros.size() - 1;) {
-						for (int n = 0; n < operadores.size(); n++) {
-							if (operadores.get(n).type() == 3) {
+						if (operadores.size() == 0) {
+							for (int k = 0; k < contadorMenos; k++) {
 								result = numeros.get(j) + numeros.get(j + 1);
 								numeros.set(j + 1, result);
 								j += 1;
-							} else if (operadores.get(n).type() == 4) {
-								result = numeros.get(j) - numeros.get(j + 1);
+							}
+						}
+						for (int n = 0; n < operadores.size() /*+ contadorMenos1*/; n++) {
+							if (operadores.get(n).type() == 3) {
+								result = numeros.get(j) + numeros.get(j + 1);
 								numeros.set(j + 1, result);
 								j += 1;
 							} else if (operadores.get(n).type() == 5) {
@@ -84,11 +104,14 @@ class Driver {
 								j += 1;
 							}
 						}
-						
-					}					
-				}				
+
+					}
+					System.out.println(result);
+					numeros.clear();
+					operadores.clear();
+					result = 0;
+				}
 			}
-			System.out.println(result);
 		}
 
 		System.out.println("\n\n -- Bye-bye -- ");
