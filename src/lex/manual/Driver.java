@@ -37,7 +37,6 @@ class Driver {
 		ArrayList<Symbol> operadores = new ArrayList<Symbol>();
 		double result = 0;
 		int contadorMenos = 0;
-		int contadorMenos1 = 0;
 
 		// Impresion por pantalla
 		System.out.println("RESULTADO: ");
@@ -62,7 +61,6 @@ class Driver {
 				if (i != 0 && i != simbolos.size() - 1 && simbolos.get(i - 1).type() == 9
 						&& simbolos.get(i + 1).type() == 9 && simbolos.get(i).type() == 4) {
 					operadores.add((new Symbol(3, "+")));
-					contadorMenos1++;
 				}
 				if (simbolos.get(i).type() == 4) {
 					contadorMenos++;
@@ -72,16 +70,16 @@ class Driver {
 						if (operadores.size() == 0) {
 							for (int k = 0; k < contadorMenos; k++) {
 								result = numeros.get(j) + numeros.get(j + 1);
-								numeros.set(j + 1, result);
 								System.out.println("Operacion: " + numeros.get(j) + " - " + numeros.get(j + 1) + " = " + result);
+								numeros.set(j + 1, result);								
 								j += 1;
 							}
 						}
-						for (int n = 0; n < operadores.size() /* + contadorMenos1 */; n++) {
+						for (int n = 0; n < operadores.size(); n++) {
 							if (operadores.get(n).type() == 3) {
 								result = numeros.get(j) + numeros.get(j + 1);
-								numeros.set(j + 1, result);
 								System.out.println("Operacion: " + numeros.get(j) + " + " + numeros.get(j + 1) + " = " + result);
+								numeros.set(j + 1, result);
 								j += 1;
 							} else if (operadores.get(n).type() == 5) {
 								result = numeros.get(j) * numeros.get(j + 1);
